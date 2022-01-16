@@ -14,7 +14,7 @@ La configurazione avviene tramite il file /etc/gwModbus/gwModbus.ini riportato a
   
 ## File di configurazione: gwModbus.ini
 
- verbose = 2
+          verbose = 2
    0 -> No output
    1 -> Info
    2 -> TX, RX bytes
