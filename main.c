@@ -206,14 +206,14 @@ void readConfig(config *config)
                     config->rtu.tty_VMIN = atoi(value);
                 }
 
-            if(config->verbose > 0){
+            if(config->verbose){
                 printMillis();
                 printf("Line %3d  -  Key: %-15s Value: %-15s\n", linenum, key, value);
             }
         }
         else if(sscanf(line, "%s %s %s", key, sep, value) == 1)
         {
-            if(config->verbose > 0){
+            if(config->verbose){
                 printMillis();
                 printf("%s\n", value);
             }
@@ -228,7 +228,7 @@ void readConfig(config *config)
 
 int configureSerial(config *config){
 
-    if(config->verbose > 0){
+    if(config->verbose){
         printMillis();
         printf("Serial configuration:\n\n");
     }
@@ -555,7 +555,7 @@ int main(){
     int serialPort = configureSerial(&settings);
 
     // Info
-    if(settings.verbose > 0){
+    if(settings.verbose){
         printMillis();
         printf("Starting server at %s:%i\n", settings.tcp.address, settings.tcp.port);
     }
@@ -563,7 +563,7 @@ int main(){
     // Configuro socket
     int socket = configureSocket(&settings);
 
-    if(settings.verbose > 0){
+    if(settings.verbose){
         printMillis();
         printf("Ok, Running\n\n");
     }
@@ -701,7 +701,7 @@ int main(){
             }
 
             if((millis() - startMillis) > settings.rtu.timeout){
-                if(settings.verbose > 0){
+                if(settings.verbose){
                     printMillis();
                     printf("Timed out\n");
                 }
