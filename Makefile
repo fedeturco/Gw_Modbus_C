@@ -2,9 +2,6 @@
 make:
 	gcc main.c -o gwModbus
 
-copy:
-	echo "Still to implement"
-
 install:
 	sudo cp gwModbus /usr/bin/gwModbus
 	sudo mkdir -p /etc/gwModbus

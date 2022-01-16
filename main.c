@@ -128,10 +128,10 @@ void readConfig(config *config)
                 // Verbose
                 if(strcmp(key, "verbose") == 0){
 
+                    config->verbose = atoi(value);
+
                     if(config->verbose > 2)
                     printf("Found key verbose\n");
-
-                    config->verbose = atoi(value);
                 }
 
                 // Indirizzo
@@ -206,32 +206,32 @@ void readConfig(config *config)
                     config->rtu.tty_VMIN = atoi(value);
                 }
 
-            printMillis();
-            printf("Line %3d  -  Key: %-15s Value: %-15s", linenum, key, value);
+            if(config->verbose > 0){
+                printMillis();
+                printf("Line %3d  -  Key: %-15s Value: %-15s\n", linenum, key, value);
+            }
         }
         else if(sscanf(line, "%s %s %s", key, sep, value) == 1)
         {
-            printMillis();
-            printf("%s\n", value);
+            if(config->verbose > 0){
+                printMillis();
+                printf("%s\n", value);
+            }
         }
         else
         {
-            if(config->verbose > 2){
-                printMillis();
-                printf("ERROR: Syntax error, line %2d", linenum);
-            }
             continue;
         }
-
-        printf("\n");
     }
     printf("\n");
 }
 
 int configureSerial(config *config){
 
-    printMillis();
-    printf("Serial configuration:\n\n");
+    if(config->verbose > 0){
+        printMillis();
+        printf("Serial configuration:\n\n");
+    }
     
     // Apro seriale
     int serialPort = open(config->rtu.device, O_RDWR);
@@ -249,22 +249,31 @@ int configureSerial(config *config){
     if(config->rtu.configuration[1] == 'N' || config->rtu.configuration[1] == 'n')
     {
         tty.c_cflag &= ~PARENB;         // DISABLE PARITY
-        printMillis();
-        printf("Parity: No parity\n");
+
+        if(config->verbose){
+            printMillis();
+            printf("Parity: No parity\n");
+        }
     }
     else if(config->rtu.configuration[1] == 'E' || config->rtu.configuration[1] == 'e')
     {
         tty.c_cflag &= ~PARODD;         // DISABLE ODD PARYTY (EVEN)
         tty.c_cflag |= PARENB;          // ENABLE PARITY
-        printMillis();
-        printf("Parity: Even\n");
+
+        if(config->verbose){
+            printMillis();
+            printf("Parity: Even\n");
+        }
     }
     else if(config->rtu.configuration[1] == 'O' || config->rtu.configuration[1] == 'o')
     {
         tty.c_cflag |= PARODD;          // ENABLE ODD PARYTY
         tty.c_cflag |= PARENB;          // ENABLE PARITY
-        printMillis();
-        printf("Parity: Odd\n");
+
+        if(config->verbose){
+            printMillis();
+            printf("Parity: Odd\n");
+        }
     }
     else
     {
@@ -281,15 +290,19 @@ int configureSerial(config *config){
     {
         tty.c_cflag |= CS8;
         
-        printMillis();
-        printf("Bytesize: 8\n");
+        if(config->verbose){
+            printMillis();
+            printf("Bytesize: 8\n");
+        }
     }
     else if(config->rtu.configuration[0] == '7')
     {
         tty.c_cflag |= CS7;
 
-        printMillis();
-        printf("Bytesize: 7\n");
+        if(config->verbose){
+            printMillis();
+            printf("Bytesize: 7\n");
+        }
     }
     else
     {
@@ -320,8 +333,10 @@ int configureSerial(config *config){
     tty.c_cc[VTIME] = config->rtu.tty_VTIME;
     tty.c_cc[VMIN] = config->rtu.tty_VMIN;
     
-    printMillis();
-    printf("Timeout: %li\n", config->rtu.timeout);
+    if(config->verbose){
+        printMillis();
+        printf("Timeout: %li\n", config->rtu.timeout);
+    }
 
     // Set baudrate
     switch(config->rtu.baud)
@@ -330,48 +345,60 @@ int configureSerial(config *config){
             cfsetispeed(&tty, B4800);
             cfsetospeed(&tty, B4800);
 
-            printMillis();
-            printf("Baudrate: 4800\n");
+            if(config->verbose){
+                printMillis();
+                printf("Baudrate: 4800\n");
+            }
             break;
 
         case 9600:
             cfsetispeed(&tty, B9600);
             cfsetospeed(&tty, B9600);
             
-            printMillis();
-            printf("Baudrate: 9600\n");
+            if(config->verbose){
+                printMillis();
+                printf("Baudrate: 9600\n");
+            }
             break;
 
         case 19200:
             cfsetispeed(&tty, B19200);
             cfsetospeed(&tty, B19200);
 
-            printMillis();
-            printf("Baudrate: 19200\n");
+            if(config->verbose){
+                printMillis();
+                printf("Baudrate: 19200\n");
+            }
             break;
 
         case 38400:
             cfsetispeed(&tty, B38400);
             cfsetospeed(&tty, B38400);
             
-            printMillis();
-            printf("Baudrate: 38400\n");
+            if(config->verbose){
+                printMillis();
+                printf("Baudrate: 38400\n");
+            }
             break;
 
         case 57600:
             cfsetispeed(&tty, B57600);
             cfsetospeed(&tty, B57600);
             
-            printMillis();
-            printf("Baudrate: 57600\n");
+            if(config->verbose){
+                printMillis();
+                printf("Baudrate: 57600\n");
+            }
             break;
 
         case 115200:
             cfsetispeed(&tty, B115200);
             cfsetospeed(&tty, B115200);
             
-            printMillis();
-            printf("Baudrate: 115200\n");
+            if(config->verbose){
+                printMillis();
+                printf("Baudrate: 115200\n");
+            }
             break;
 
         default:
@@ -380,13 +407,13 @@ int configureSerial(config *config){
             exit(EXIT_FAILURE);
     }
 
-    printf("\n");
-
-    printMillis();
-    printf("VTIME: %i\n", config->rtu.tty_VTIME);
-
-    printMillis();
-    printf("VMIN:  %i\n", config->rtu.tty_VMIN);
+    if(config->verbose){
+        printf("\n");
+        printMillis();
+        printf("VTIME: %i\n", config->rtu.tty_VTIME);
+        printMillis();
+        printf("VMIN:  %i\n", config->rtu.tty_VMIN);
+    }
     
     // Applico tty settings
     if (tcsetattr(serialPort, TCSANOW, &tty) != 0) {
@@ -396,7 +423,8 @@ int configureSerial(config *config){
         exit(EXIT_FAILURE);
     }
 
-    printf("\n");
+    if(config->verbose)
+        printf("\n");
 
     return serialPort;
 }
@@ -526,12 +554,19 @@ int main(){
     // Configuro la seriale
     int serialPort = configureSerial(&settings);
 
+    // Info
+    if(settings.verbose > 0){
+        printMillis();
+        printf("Starting server at %s:%i\n", settings.tcp.address, settings.tcp.port);
+    }
+
     // Configuro socket
     int socket = configureSocket(&settings);
 
-    // Info
-    printMillis();
-    printf("Starting server at %s:%i\n\n", settings.tcp.address, settings.tcp.port);
+    if(settings.verbose > 0){
+        printMillis();
+        printf("Ok, Running\n\n");
+    }
 
     while (1) {
         // Definizioni client
@@ -557,8 +592,10 @@ int main(){
         inet_ntop(AF_INET, &client_address.sin_addr, clientName, INET_ADDRSTRLEN);
 
         // Info connessione in ingresso
-        printMillis();
-        printf("Accepted connection from %s:%i\n", inet_ntoa(client_address.sin_addr), ntohs(client_address.sin_port));
+        if(settings.verbose > 1){
+            printMillis();
+            printf("Accepted connection from %s:%i\n", inet_ntoa(client_address.sin_addr), ntohs(client_address.sin_port));
+        }
 
         // Output console
         if(settings.verbose > 1){
