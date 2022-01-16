@@ -15,10 +15,10 @@ La configurazione avviene tramite il file /etc/gwModbus/gwModbus.ini riportato a
 ## File di configurazione: gwModbus.ini
 
 verbose = 2
-# 0 -> No output
-# 1 -> Info
-# 2 -> TX, RX bytes
-# 3 -> All 
+  0 -> No output
+  1 -> Info
+  2 -> TX, RX bytes
+  3 -> All 
 
 [tcp]
 address = 0.0.0.0
