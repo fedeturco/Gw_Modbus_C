@@ -87,30 +87,45 @@ void printMillis(){
     printf(".%3lu] ", millis);
 }
 
-long millis(){
+unsigned long long millis(){
     struct timespec spec;
     clock_gettime(CLOCK_REALTIME, &spec);
 
-    long millis = spec.tv_sec * 1.0e3 + spec.tv_nsec / 1.0e6;
+    unsigned long long millis = (unsigned long long)(spec.tv_sec) * 1.0e3 + (unsigned long long)(spec.tv_nsec) / 1.0e6;
 
     // debug
     if(settings.verbose > 2){
-        printf("millis: %li\n", millis);
+        printf("millis: %llu\n", millis);
     }
 
     return millis;
 }
+
+/*unsigned long millis_2(){
+    struct timespec spec;
+    clock_gettime(CLOCK_REALTIME, &spec);
+
+    unsigned long millis = (unsigned long)(spec.tv_sec * 1.0e3) + (unsigned long)(spec.tv_nsec / 1.0e6);
+
+    // debug
+    if(settings.verbose > 2){
+        printf("millis: %lu\n", millis);
+    }
+
+    return millis;
+}*/
 
 void readConfig(config *config)
 {
     char line[256];
     int linenum=0;
 
+    // Apro il file di configurazione
     FILE *file_ = fopen("/etc/gwModbus/gwModbus.ini", "r");
     
     // Default values
-    config->rtu.tty_VTIME = 10;
-    config->rtu.tty_VMIN = 5;
+    config->rtu.tty_VTIME = 1;
+    config->rtu.tty_VMIN = 0;
 
     printMillis();
     printf("Reading configuration file\n");
@@ -224,6 +239,8 @@ void readConfig(config *config)
         }
     }
     printf("\n");
+
+    fclose(file_);
 }
 
 int configureSerial(config *config){
@@ -554,6 +571,9 @@ int main(){
     // Configuro la seriale
     int serialPort = configureSerial(&settings);
 
+    // Flush buffer input/output
+    tcflush(serialPort, TCIOFLUSH);
+
     // Info
     if(settings.verbose){
         printMillis();
@@ -576,12 +596,16 @@ int main(){
         // Connessione in ingresso
         int client_sockfd = accept(socket, (struct sockaddr*)&client_address,&client_len);
 
-        // Leggo TCP in ingresso
+        // Buffer
         uint8_t request[BUFSIZE_MODBUS];
-        ssize_t nBytes_read = read(client_sockfd, request, BUFSIZE_TCP);
+        uint8_t received485[BUFSIZE_MODBUS];
+        uint8_t toSend485[BUFSIZE_MODBUS];
+        uint8_t response[BUFSIZE_MODBUS];
+
+        ssize_t nBytes = read(client_sockfd, request, BUFSIZE_TCP);
 
         // Scarto pacchetti troppo corti
-        if(nBytes_read < 8){
+        if(nBytes < 8){
             continue;
         }
 
@@ -600,9 +624,9 @@ int main(){
         // Output console
         if(settings.verbose > 1){
             printMillis();
-            printf("<- RX TCP [%3zu]: ", nBytes_read);
+            printf("<- RX TCP [%3zu]: ", nBytes);
 
-            for(int i = 0; i < nBytes_read; i++){
+            for(int i = 0; i < nBytes; i++){
                 printf("%02x ", request[i]);
             }
 
@@ -611,7 +635,7 @@ int main(){
 
         // Controllo protocol identifier che sia 00 00
         if(request[2] != 0 || request[3] != 0){
-            printf("Protocol identifier non valido [%2x %2x], per ModBus TCP deve essere 0\n", request[2], request[3]);
+            printf("Protocol identifier not valid [%2x %2x], for ModBus TCP it should be 0\n", request[2], request[3]);
             close(client_sockfd);
             continue;
         }
@@ -619,9 +643,9 @@ int main(){
         ssize_t messageLen = (request[4] << 8) + request[5];
         ssize_t responseLen = 0;
 
-        if((messageLen + 6) != nBytes_read){
+        if((messageLen + 6) != nBytes){
             printMillis();
-            printf("ERROR: incoming buffer length [%3zu] != MosBus packet length + 6 [%3zu]\n", nBytes_read, messageLen);
+            printf("ERROR: incoming buffer length [%3zu] != MosBus packet length + 6 [%3zu]\n", nBytes, messageLen);
         }
 
         // FC01, FC02
@@ -658,19 +682,18 @@ int main(){
         }
 
         // Creo un nuovo buffer con il pacchetto da inviare sulla 485
-        uint8_t toSend485[BUFSIZE_MODBUS];
-        ssize_t nBytes_write = nBytes_read - 6;
-        memcpy(&toSend485[0], &request[6], (nBytes_read - 6));
+        nBytes = nBytes - 6;
+        memcpy(&toSend485[0], &request[6], nBytes);
 
         // Aggiungo il CRC ModBus
-        nBytes_write = addCrc16(&toSend485[0], nBytes_write);
+        nBytes = addCrc16(&toSend485[0], nBytes);
 
         // Output console
         if(settings.verbose > 1){
             printMillis();
-            printf("-> TX RTU [%3zu]: ", nBytes_write);
+            printf("-> TX RTU [%3zu]: ", nBytes);
 
-            for(int i = 0; i < nBytes_write; i++){
+            for(int i = 0; i < nBytes; i++){
                 printf("%02x ", toSend485[i]);
             }
             
@@ -678,23 +701,20 @@ int main(){
         }
 
         // Serial.flush
-        tcflush(serialPort, TCIOFLUSH);
+        tcflush(serialPort, TCIFLUSH);
 
         // Invio il pacchetto sulla seriale
-        write(serialPort, toSend485, nBytes_write);
-
-        // Creo un nuovo buffer con il pacchetto ricevuto dalla 485
-        uint8_t received485[BUFSIZE_MODBUS];
+        write(serialPort, toSend485, nBytes);
 
         // Leggo risposta 485
-        nBytes_read = 0;
+        nBytes = 0;
 
-        long startMillis = millis();
+        unsigned long long startMillis = millis();
         
-        // Continuo a spazzolare il buffer fino a che raggiungo la lunghezza che mi aspetto o vado in timeout
-        while(nBytes_read < responseLen){
-            ssize_t currRead = read(serialPort, &received485[nBytes_read], responseLen - nBytes_read);
-            nBytes_read += currRead;
+        // Continuo a spazzolare il buffer fino a che raggiungo la lunghezza attesa o vado in timeout
+        while(nBytes < responseLen){
+            ssize_t currRead = read(serialPort, &received485[nBytes], responseLen - nBytes);
+            nBytes += currRead;
 
             if(settings.verbose > 2){
                 printf("currRead: %zu\n", currRead);
@@ -707,10 +727,18 @@ int main(){
                 }
                 break;
             }
+
+            if(startMillis > millis()){
+                if(settings.verbose){
+                    printMillis();
+                    printf("Read aborted (millis() overflow)\n");
+                }
+                break;
+            }
         }
 
         // Timeout risposta
-        if(nBytes_read == 0){
+        if(nBytes == 0){
             close(client_sockfd);
             continue;
         }
@@ -718,9 +746,9 @@ int main(){
         // Output console
         if(settings.verbose > 1){
             printMillis();
-            printf("<- RX RTU [%3zu]: ", nBytes_read);
+            printf("<- RX RTU [%3zu]: ", nBytes);
             
-            for(int i = 0; i < nBytes_read; i++){
+            for(int i = 0; i < nBytes; i++){
                 printf("%02x ", received485[i]);
             }
             
@@ -728,25 +756,24 @@ int main(){
         }
 
         // Check CRC
-        checkCrc16(received485, nBytes_read);
-
-        // Creo un nuovo buffer con il pacchetto di risposta TCP
-        uint8_t response[256];
+        if(checkCrc16(received485, nBytes)){
+            close(client_sockfd);
+            continue;
+        }
 
         // I primi 6 byte del pacchetto (header) sono uguali alla request
         memcpy(&response[0], &request[0], 6);
 
-
-        if(nBytes_read > 2){
-            memcpy(&response[6], &received485[0], nBytes_read - 2);
-            nBytes_write = nBytes_read + 4;
+        if(nBytes > 2){
+            memcpy(&response[6], &received485[0], nBytes - 2);
+            nBytes = nBytes + 4;
 
             // Output console
             if(settings.verbose > 1){
                 printMillis();
-                printf("-> TX TCP [%3zu]: ", nBytes_write);
+                printf("-> TX TCP [%3zu]: ", nBytes);
 
-                for(int i = 0; i < nBytes_write; i++){
+                for(int i = 0; i < nBytes; i++){
                     printf("%02x ", response[i]);
                 }
 
@@ -754,7 +781,7 @@ int main(){
             }
 
             // Invio il pacchetto TCP
-            write(client_sockfd, response, nBytes_write);
+            write(client_sockfd, response, nBytes);
         }else{
             printMillis();
             printf("Not enough bytes received from RTU\n");
