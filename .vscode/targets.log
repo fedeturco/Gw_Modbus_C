@@ -1,0 +1,330 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+ 
+# GNU Make 4.2.1
+ 
+# Built for x86_64-pc-linux-gnu
+ 
+# Copyright (C) 1988-2016 Free Software Foundation, Inc.
+ 
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Tue Feb 15 22:41:47 2022
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# default
+.SHELLFLAGS := -c
+# environment
+XDG_SESSION_CLASS = user
+ 
+# environment
+XDG_SESSION_TYPE = x11
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# default
+MAKE_VERSION := 4.2.1
+# makefile
+CURDIR := /home/mate/Progetti/GwModBus
+# makefile
+SHELL = /bin/sh
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+_ = /usr/share/code/code
+# makefile (from 'Makefile', line 7)
+SYSROOT_CROSS = /opt/pi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/arm-linux-gnueabihf/sysroot
+# environment
+GTK_OVERLAY_SCROLLING = 0
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# environment
+GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+MAKELEVEL := 0
+# environment
+XDG_DATA_DIRS = /usr/share/mate:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+# makefile (from 'Makefile', line 11)
+TARGET_PASSWD = RaspDemo15
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+LESSOPEN = | /bin/lesspipe %s
+# environment
+LC_NAME = it_IT.UTF-8
+# environment
+VSCODE_CWD = /home/mate
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# environment
+PATH = /sbin:/bin:/usr/bin:/usr/local/bin:/snap/bin
+ 
+# environment
+GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
+# environment
+SESSION_MANAGER = local/mate-VirtualBox:@/tmp/.ICE-unix/2883,unix/mate-VirtualBox:/tmp/.ICE-unix/2883
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+UBUNTU_MENUPROXY = 1
+# environment
+ 
+VSCODE_LOG_STACK = false
+# environment
+VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=0a295d25-6f28-4588-a44f-692ac920d387&iid=0a295d25-6f28-4588-a44f-692ac920d387&sid=0a295d25-6f28-4588-a44f-692ac920d387","uploadToServer":true}
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
+# environment
+LS_COLORS = 
+# environment
+SSH_AUTH_SOCK = /tmp/ssh-enDgOKeW74QA/agent.2883
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 3488
+# automatic
+%F = $(notdir $%)
+# environment
+DISPLAY = :10.0
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+PWD = /home/mate/Progetti/GwModBus
+# default
+.LOADED := 
+# environment
+SSH_AGENT_PID = 2995
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = MATE
+# environment
+GTK_MODULES = appmenu-gtk-module:appmenu-gtk-module:gail:atk-bridge:appmenu-gtk-module
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/services/extensions/node/extensionHostProcess
+# environment
+HOME = /home/mate
+# environment
+LESSCLOSE = /bin/lesspipe %s %s
+# environment
+VSCODE_CODE_CACHE_PATH = /home/mate/.config/Code/CachedData/899d46d82c4c95423fb7e10e68eba52050e30ba3
+# environment
+LOGNAME = mate
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# automatic
++F = $(notdir $+)
+# environment
+ 
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# makefile (from 'Makefile', line 10)
+TARGET_USER = pi
+# environment
+LC_TIME = it_IT.UTF-8
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 0
+# environment
+XRDP_PULSE_SINK_SOCKET = xrdp_chansrv_audio_out_socket_10
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-4989a52a-4a77-4786-b5dc-bba442c4ed63.sock
+# environment
+XDG_SESSION_ID = c3
+# environment
+USER = mate
+# environment
+XRDP_PULSE_SOURCE_SOCKET = xrdp_chansrv_audio_in_socket_10
+# environment
+LC_MONETARY = it_IT.UTF-8
+# makefile
+.DEFAULT_GOAL := make
+# environment
+XDG_CURRENT_DESKTOP = MATE
+# makefile (from 'Makefile', line 4)
+CC_CROSS_FLAGS = -g -std=c99
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+LC_TELEPHONE = it_IT.UTF-8
+# default
+MAKE_COMMAND := make
+# default
+.VARIABLES := 
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-d097b41d-1.63.2-main.sock
+# environment
+UID = 1000
+# makefile
+MAKEFLAGS = pqrR
+# environment
+MFLAGS = -pqrR
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+BREAKPAD_DUMP_LOCATION = /home/mate/.config/Code/exthost Crash Reports
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+ 
+# environment
+PULSE_SCRIPT = /etc/xrdp/pulse/default.pa
+# environment
+GDK_BACKEND = x11
+# environment
+LC_PAPER = it_IT.UTF-8
+# environment
+QT_ACCESSIBILITY = 1
+# environment
+XRDP_SESSION = 1
+# default
+MAKEFILES := 
+# environment
+XRDP_SOCKET_PATH = /run/xrdp/sockdir
+# environment
+LC_NUMERIC = it_IT.UTF-8
+# automatic
+<F = $(notdir $<)
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+LC_MEASUREMENT = it_IT.UTF-8
+# environment
+LC_ALL = C
+# makefile (from 'Makefile', line 3)
+CC_CROSS = /opt/pi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc
+# automatic
+^F = $(notdir $^)
+# makefile (from 'Makefile', line 12)
+TARGET_IP_ADDRESS = 192.168.1.149
+# default
+SUFFIXES := 
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+MATE_DESKTOP_SESSION_ID = this-is-deprecated
+# default
+.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+# environment
+LC_IDENTIFICATION = it_IT.UTF-8
+# default
+.RECIPEPREFIX := 
+# environment
+INSIDE_CAJA_PYTHON = 
+# environment
+LC_ADDRESS = it_IT.UTF-8
+# environment
+LANG = C
+# environment
+VSCODE_PID = 3488
+# variable set hash-table stats:
+# Load=107/1024=10%, Rehash=0, Collisions=11/132=8%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 2053, inode 672430): 9 files, no impossibilities.
+
+# 9 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+# Not a target:
+all:
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
+copy:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 26):
+	scp build/gwModbus $(TARGET_USER)@$(TARGET_IP_ADDRESS):/usr/bin/
+	scp config_files/gwModbus.ini $(TARGET_USER)@$(TARGET_IP_ADDRESS):/etc/gwModbus/
+
+cross:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 18):
+	$(CC_CROSS) main.c crc.c config.c $(CC_CROSS_FLAGS) -o build/gwModbus --sysroot=$(SYSROOT_CROSS)
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-02-15 22:41:43.8604955
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+make:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 15):
+	gcc src/main.c src/crc.c src/config.c -o build/gwModbus
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 30):
+	rm build/gwModbus
+
+install:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 21):
+	sudo cp build/gwModbus /usr/bin/gwModbus
+	sudo mkdir -p /etc/gwModbus
+	sudo cp config_files/config.ini /etc/gwModbus/gwModbus.ini
+
+# files hash-table stats:
+# Load=9/1024=1%, Rehash=0, Collisions=0/19=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 19 / storage = 145 B / avg = 7 B
+# current buf: size = 8162 B / used = 145 B / count = 19 / avg = 7 B
+
+# strcache performance: lookups = 28 / hit rate = 32%
+# hash-table stats:
+# Load=19/8192=0%, Rehash=0, Collisions=1/28=4%
+# Finished Make data base on Tue Feb 15 22:41:47 2022
+
+ 
