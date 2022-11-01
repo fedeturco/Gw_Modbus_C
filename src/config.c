@@ -2,7 +2,7 @@
  * @file config.c
  * @author Federico Turco ()
  * @brief 
- * @version 0.1
+ * @version 1.0
  * @date 2022-02-15
  * 
  * @copyright Copyright (c) Turco Federico 2022
