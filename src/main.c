@@ -2,7 +2,7 @@
  * @file main.c
  * @author Federico Turco ()
  * @brief 
- * @version 0.1
+ * @version 1.0
  * @date 2022-02-15
  * 
  * @copyright Copyright (c) Turco Federico 2022
@@ -51,11 +51,7 @@
 #include "config.h"
 #include "crc.h"
 
-// Def. buffer size
-#define BUFSIZE_MODBUS  256
-#define BUFSIZE_TCP     256
-
-#define version         "1.0"
+#include "main.h"
 
 
 
